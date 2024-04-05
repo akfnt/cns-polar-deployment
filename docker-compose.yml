@@ -1,8 +1,11 @@
 version: "3.8"                              # 도커 컴포즈 구문 버전
 services:                                   # 실행할 모든 컨테이너를 나열하는 섹션
+  # Applications
+
   cns-catalog-service:                      # cns-catalog-service 컨테이너를 기술하는 섹션
     depends_on:                             # 카탈로그 서비스는 PostgreSQL 데이터베이스 이후에 시작해야 함
       - polar-postgres
+      - cns-config-service
     image: "cns-catalog-service"
     container_name: "cns-catalog-service"
     ports:                                  # 포트 맵핑 목록을 위한 섹션
@@ -14,6 +17,22 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_DEBUG_PORT=8001                 # 디버그 연결은 8001 포트를 통해 받는다 (빌드팩에 의해 제공)
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
       - POLAR_TESTDATA_ENABLED=true         # 'polar.testdata.enabled' systemProperty 활성화
+      - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
+      - SPRING_CLOUD_CONFIG_FAIL-FAST=true  # depends_on은 서버가 시작될때까지만 기다리며 config 서버가 연결을 수락할 준비가 되기까지는 기다려주지 않음..
+                                            # depends_on에 health check 기능을 추가하는 방법도 있지만, 일단 간단하게 retry 할 수 있도록 환경 변수 지정
+
+  cns-config-service:
+    image: "cns-config-service"
+    container_name: "cns-config-service"
+    ports: # 포트 맵핑 목록을 위한 섹션
+      - 8888:8888
+      - 9888:9888                           # JVM 이 디버그 연결을 듣는 포트
+    environment: # 환경 변수를 나열하는 섹션
+      - BPL_JVM_THREAD_COUNT=50             # 메모리 계산을 위한 스레드의 수를 설정하는 패키토 빌드팩 환경 변수
+      - BPL_DEBUG_ENABLED=true              # IDE 원격 디버그 연결(마치 로컬에서 실행하는 것처럼 브레이크 포인트 등 사용하여 디버깅 할 수 있다)을 수락하기 위한 JVM 설정을 활성화 (빌드팩에 의해 제공)
+      - BPL_DEBUG_PORT=9888                 # 디버그 연결은 8001 포트를 통해 받는다 (빌드팩에 의해 제공)
+
+# Backing Services
 
   polar-postgres:
     image: "postgres:14.4"
