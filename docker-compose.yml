@@ -7,8 +7,11 @@ services:                                   # 실행할 모든 컨테이너를 �
     container_name: "cns-catalog-service"
     ports:                                  # 포트 맵핑 목록을 위한 섹션
       - 9001:9001
+      - 8001:8001                           # JVM 이 디버그 연결을 듣는 포트
     environment:                            # 환경 변수를 나열하는 섹션
       - BPL_JVM_THREAD_COUNT=50             # 메모리 계산을 위한 스레드의 수를 설정하는 패키토 빌드팩 환경 변수
+      - BPL_DEBUG_ENABLED=true              # IDE 원격 디버그 연결을 수락하기 위한 JVM 설정을 활성화 (빌드팩에 의해 제공)
+      - BPL_DEBUG_PORT=8001                 # 디버그 연결은 8001 포트를 통해 받는다 (빌드팩에 의해 제공)
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
       - POLAR_TESTDATA_ENABLED=true         # 'polar.testdata.enabled' systemProperty 활성화
 
