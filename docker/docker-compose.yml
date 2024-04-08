@@ -39,7 +39,8 @@ services:                                   # 실행할 모든 컨테이너를 �
     container_name: "polar-postgres"
     ports:
       - 5432:5432
-    environment:
+    environment:                            # POSTGRES_DB 환경 변수에 대해 더 이상 값이 정의되지 않는다
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_catalog
+    volumes:                                # 초기화 SQL 스크립트를 컨테이너에 볼륨으로 마운트한다
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
