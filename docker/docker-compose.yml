@@ -64,3 +64,9 @@ services:                                   # 실행할 모든 컨테이너를 �
       - POSTGRES_PASSWORD=password
     volumes:                                # 초기화 SQL 스크립트를 컨테이너에 볼륨으로 마운트한다
       - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  polar-redis:
+    image: "redis:7.0"
+    container_name: "polar-redis"
+    ports:
+      - 6379:6379
