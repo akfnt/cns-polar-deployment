@@ -86,3 +86,12 @@ services:                                   # 실행할 모든 컨테이너를 �
     container_name: "polar-redis"
     ports:
       - 6379:6379
+
+  polar-rabbitmq:
+    image: rabbitmq:3.13-management         # 관리 플러그인이 활성화된 rabbitmq 공식 이미지
+    container_name: polar-rabbitmq
+    ports:
+      - 5672:5672                           # rabbitmq 가 AMQP 요청을 듣는 포트
+      - 15672:15672                         # 관리 GUI 를 노출하는 포트
+    volumes:                                # 볼륨으로 마운트된 설정파일
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
