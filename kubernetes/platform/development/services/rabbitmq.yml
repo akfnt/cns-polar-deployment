@@ -5,6 +5,9 @@ metadata:
   labels:
     db: polar-rabbitmq
 data:
+  # ex) [rabbitmq_management, rabbitmq_ssl].
+  enabled_plugins: |
+    [rabbitmq_management].
   rabbitmq.conf: |
     default_user = user
     default_pass = password
