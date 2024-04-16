@@ -110,3 +110,15 @@ services:                                   # 실행할 모든 컨테이너를 �
       - 15672:15672                         # 관리 GUI 를 노출하는 포트
     volumes:                                # 볼륨으로 마운트된 설정파일
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+
+  polar-keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: "polar-keycloak"
+    command: start-dev --import-realm       # 키클록을 개발모드로 (내장 DB를 사용해) 시작한다. 애플리케이션 시작시 제공된 설정을 임포트한다
+    volumes:                                # 설정 파일을 컨테이너 안으로 로드하기 위한 볼륨 설정
+      - ./keycloak:/opt/keycloak/data/import
+    environment:
+      - KEYCLOAK_ADMIN=user
+      - KEYCLOAK_ADMIN_PASSWORD=password
+    ports:
+      - 8080:8080
