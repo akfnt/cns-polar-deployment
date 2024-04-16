@@ -54,6 +54,7 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_DEBUG_PORT=8000
       - CATALOG_SERVICE_URL=http://cns-catalog-service:9001
       - ORDER_SERVICE_URL=http://cns-order-service:9002
+      - SPA_URL=http://polar-ui:9004
       - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
       - SPRING_DATA_REDIS_HOST=polar-redis
 
@@ -82,6 +83,14 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_JVM_THREAD_COUNT=50             # 메모리 계산을 위한 스레드의 수를 설정하는 패키토 빌드팩 환경 변수
       - BPL_DEBUG_ENABLED=true              # IDE 원격 디버그 연결(마치 로컬에서 실행하는 것처럼 브레이크 포인트 등 사용하여 디버깅 할 수 있다)을 수락하기 위한 JVM 설정을 활성화 (빌드팩에 의해 제공)
       - BPL_DEBUG_PORT=9888                 # 디버그 연결은 8001 포트를 통해 받는다 (빌드팩에 의해 제공)
+
+  polar-ui:
+    image: "ghcr.io/polarbookshop/polar-ui:v1"  # 앵귤러 애플리케이션 컨테이너 이미지
+    container_name: "polar-ui"
+    ports:
+      - 9004:9004                           # NGINX 가 포트 9004를 통해 SPA를 제공
+    environment:
+      - PORT=9004                           # NGINX 의 서버 포트를 설정
 
 # Backing Services
 
