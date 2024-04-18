@@ -20,6 +20,7 @@ services:                                   # 실행할 모든 컨테이너를 �
       - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
       - SPRING_CLOUD_CONFIG_FAIL-FAST=true  # depends_on은 서버가 시작될때까지만 기다리며 config 서버가 연결을 수락할 준비가 되기까지는 기다려주지 않음..
                                             # depends_on에 health check 기능을 추가하는 방법도 있지만, 일단 간단하게 retry 할 수 있도록 환경 변수 지정
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
 
   cns-order-service:
     depends_on:
@@ -40,6 +41,7 @@ services:                                   # 실행할 모든 컨테이너를 �
       - SPRING_R2DBC_URL=r2dbc:postgresql://polar-postgres:5432/polardb_order
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
 
   cns-edge-service:
     depends_on:
