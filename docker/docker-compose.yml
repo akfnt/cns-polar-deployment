@@ -4,6 +4,8 @@ services:                                   # 실행할 모든 컨테이너를 �
 
   cns-catalog-service:                      # cns-catalog-service 컨테이너를 기술하는 섹션
     depends_on:                             # 카탈로그 서비스는 PostgreSQL 데이터베이스 이후에 시작해야 함
+      - fluent-bit
+      - polar-keycloak
       - polar-postgres
       - cns-config-service
     image: "cns-catalog-service"
@@ -28,7 +30,10 @@ services:                                   # 실행할 모든 컨테이너를 �
 
   cns-order-service:
     depends_on:
+      - fluent-bit
+      - polar-keycloak
       - polar-postgres
+      - polar-rabbitmq
       - cns-config-service
     image: "cns-order-service"
     container_name: "cns-order-service"
@@ -53,7 +58,10 @@ services:                                   # 실행할 모든 컨테이너를 �
 
   cns-edge-service:
     depends_on:
+      - fluent-bit
+      - polar-keycloak
       - polar-redis
+      - polar-ui
       - cns-config-service
     image: "cns-edge-service"
     container_name: "cns-edge-service"
@@ -76,6 +84,7 @@ services:                                   # 실행할 모든 컨테이너를 �
 
   cns-dispatcher-service:
     depends_on:
+      - fluent-bit
       - polar-rabbitmq
       - cns-config-service
     image: "cns-dispatcher-service"
@@ -94,6 +103,8 @@ services:                                   # 실행할 모든 컨테이너를 �
         fluentd-address: 127.0.0.1:24224
 
   cns-config-service:
+    depends_on:
+      - fluent-bit
     image: "cns-config-service"
     container_name: "cns-config-service"
     ports: # 포트 맵핑 목록을 위한 섹션
