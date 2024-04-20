@@ -1,0 +1,30 @@
+global:
+  scrape_interval: 2s
+
+scrape_configs:
+  - job_name: 'cns-edge-service'
+    scrape_interval: 2s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'cns-edge-service:9000' ]
+  - job_name: 'cns-catalog-service'
+    scrape_interval: 2s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'cns-catalog-service:9001' ]
+  - job_name: 'cns-order-service'
+    scrape_interval: 2s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'cns-order-service:9002' ]
+  - job_name: 'cns-dispatcher-service'
+    scrape_interval: 2s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'cns-dispatcher-service:9003' ]
+  - job_name: 'cns-config-service'
+    scrape_interval: 2s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'cns-config-service:8888' ]
+  
