@@ -21,6 +21,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - SPRING_CLOUD_CONFIG_FAIL-FAST=true  # depends_on은 서버가 시작될때까지만 기다리며 config 서버가 연결을 수락할 준비가 되기까지는 기다려주지 않음..
                                             # depends_on에 health check 기능을 추가하는 방법도 있지만, 일단 간단하게 retry 할 수 있도록 환경 변수 지정
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
 
   cns-order-service:
     depends_on:
@@ -42,6 +46,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - SPRING_FLYWAY_URL=jdbc:postgresql://polar-postgres:5432/polardb_order
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
 
   cns-edge-service:
     depends_on:
@@ -61,6 +69,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
       - SPRING_DATA_REDIS_HOST=polar-redis
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://host.docker.internal:8080/realms/PolarBookshop
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
 
   cns-dispatcher-service:
     depends_on:
@@ -76,6 +88,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_DEBUG_PORT=8003
       - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
 
   cns-config-service:
     image: "cns-config-service"
@@ -87,6 +103,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_JVM_THREAD_COUNT=50             # 메모리 계산을 위한 스레드의 수를 설정하는 패키토 빌드팩 환경 변수
       - BPL_DEBUG_ENABLED=true              # IDE 원격 디버그 연결(마치 로컬에서 실행하는 것처럼 브레이크 포인트 등 사용하여 디버깅 할 수 있다)을 수락하기 위한 JVM 설정을 활성화 (빌드팩에 의해 제공)
       - BPL_DEBUG_PORT=9888                 # 디버그 연결은 8001 포트를 통해 받는다 (빌드팩에 의해 제공)
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
 
   polar-ui:
     image: "ghcr.io/polarbookshop/polar-ui:v1"  # 앵귤러 애플리케이션 컨테이너 이미지
