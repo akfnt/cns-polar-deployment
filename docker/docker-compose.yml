@@ -218,6 +218,6 @@ services:                                   # 실행할 모든 컨테이너를 �
     command: -config.file=/etc/tempo-config.yml
     ports:
       - "3110:3100"     # Tempo
-      - "4317:4317"     # OTel
+      - "4317:4317"     # OTel - gRPC 를 통해 오픈텔레메트리 프로토콜을 사용해 트레이스를 수신할 포트
     volumes:
       - ./observability/tempo/tempo.yml:/etc/tempo-config.yml
