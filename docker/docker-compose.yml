@@ -8,6 +8,7 @@ services:                                   # 실행할 모든 컨테이너를 �
       - polar-keycloak
       - polar-postgres
       - cns-config-service
+      - tempo
     image: "cns-catalog-service"
     container_name: "cns-catalog-service"
     ports:                                  # 포트 맵핑 목록을 위한 섹션
@@ -17,6 +18,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_JVM_THREAD_COUNT=50             # 메모리 계산을 위한 스레드의 수를 설정하는 패키토 빌드팩 환경 변수
       - BPL_DEBUG_ENABLED=true              # IDE 원격 디버그 연결(마치 로컬에서 실행하는 것처럼 브레이크 포인트 등 사용하여 디버깅 할 수 있다)을 수락하기 위한 JVM 설정을 활성화 (빌드팩에 의해 제공)
       - BPL_DEBUG_PORT=8001                 # 디버그 연결은 8001 포트를 통해 받는다 (빌드팩에 의해 제공)
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.32.0.jar   # JVM 이 클라우드 네이티브 빌드팩이 애플리케이션 의존성을 설치한 경로에서 오픈텔레메트리 자바 에이전트를 실행하라고 지시한다.
+      - OTEL_SERVICE_NAME=cns-catalog-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317   # 오픈텔레메트리 프로토콜(OTLP)를 지원하는 분산 트레이스 백엔드 URL
+      - OTEL_METRICS_EXPORTER=none
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
       - POLAR_TESTDATA_ENABLED=true         # 'polar.testdata.enabled' systemProperty 활성화
       - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
@@ -44,6 +49,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_JVM_THREAD_COUNT=50
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8002
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.32.0.jar   # JVM 이 클라우드 네이티브 빌드팩이 애플리케이션 의존성을 설치한 경로에서 오픈텔레메트리 자바 에이전트를 실행하라고 지시한다.
+      - OTEL_SERVICE_NAME=cns-order-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317   # 오픈텔레메트리 프로토콜(OTLP)를 지원하는 분산 트레이스 백엔드 URL
+      - OTEL_METRICS_EXPORTER=none
       - POLAR_CATALOG_SERVICE_URI=http://cns-catalog-service:9001
       - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
       - SPRING_CLOUD_CONFIG_FAIL-FAST=true
@@ -71,6 +80,10 @@ services:                                   # 실행할 모든 컨테이너를 �
     environment:
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8000
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.32.0.jar   # JVM 이 클라우드 네이티브 빌드팩이 애플리케이션 의존성을 설치한 경로에서 오픈텔레메트리 자바 에이전트를 실행하라고 지시한다.
+      - OTEL_SERVICE_NAME=cns-edge-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317   # 오픈텔레메트리 프로토콜(OTLP)를 지원하는 분산 트레이스 백엔드 URL
+      - OTEL_METRICS_EXPORTER=none
       - CATALOG_SERVICE_URL=http://cns-catalog-service:9001
       - ORDER_SERVICE_URL=http://cns-order-service:9002
       - SPA_URL=http://polar-ui:9004
@@ -95,6 +108,10 @@ services:                                   # 실행할 모든 컨테이너를 �
     environment:
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8003
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.32.0.jar   # JVM 이 클라우드 네이티브 빌드팩이 애플리케이션 의존성을 설치한 경로에서 오픈텔레메트리 자바 에이전트를 실행하라고 지시한다.
+      - OTEL_SERVICE_NAME=cns-dispatcher-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317   # 오픈텔레메트리 프로토콜(OTLP)를 지원하는 분산 트레이스 백엔드 URL
+      - OTEL_METRICS_EXPORTER=none
       - SPRING_CLOUD_CONFIG_URI=http://cns-config-service:8888
       - SPRING_RABBITMQ_HOST=polar-rabbitmq
     logging:
@@ -114,6 +131,10 @@ services:                                   # 실행할 모든 컨테이너를 �
       - BPL_JVM_THREAD_COUNT=50             # 메모리 계산을 위한 스레드의 수를 설정하는 패키토 빌드팩 환경 변수
       - BPL_DEBUG_ENABLED=true              # IDE 원격 디버그 연결(마치 로컬에서 실행하는 것처럼 브레이크 포인트 등 사용하여 디버깅 할 수 있다)을 수락하기 위한 JVM 설정을 활성화 (빌드팩에 의해 제공)
       - BPL_DEBUG_PORT=9888                 # 디버그 연결은 8001 포트를 통해 받는다 (빌드팩에 의해 제공)
+      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.32.0.jar   # JVM 이 클라우드 네이티브 빌드팩이 애플리케이션 의존성을 설치한 경로에서 오픈텔레메트리 자바 에이전트를 실행하라고 지시한다.
+      - OTEL_SERVICE_NAME=cns-config-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317   # 오픈텔레메트리 프로토콜(OTLP)를 지원하는 분산 트레이스 백엔드 URL
+      - OTEL_METRICS_EXPORTER=none
     logging:
       driver: fluentd
       options:
