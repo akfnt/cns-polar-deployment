@@ -1,4 +1,4 @@
-include('../../../../cns-config-service/Tiltfile')
+# include('../../../../cns-config-service/Tiltfile')
 include('../../../../cns-edge-service/Tiltfile')
 include('../../../../cns-dispatcher-service/Tiltfile')
 include('../../../../cns-order-service/Tiltfile')

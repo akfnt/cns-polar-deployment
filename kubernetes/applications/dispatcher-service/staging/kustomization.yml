@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - github.com/akfnt/cns-dispatcher-service/k8s?ref=main
+
+patches:
+  - path: patch-env.yml
+
+configMapGenerator:
+  - behavior: merge
+    files:
+      - application-staging.yml
+    name: cns-dispatcher-config
+
+images:
+  - name: cns-dispatcher-service
+    newName: ghcr.io/akfnt/cns-dispatcher-service
+    newTag: latest
+
+replicas:
+  - name: cns-dispatcher-service
+    count: 1

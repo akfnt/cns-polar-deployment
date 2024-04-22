@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cns-order-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: cns-order-service
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: staging

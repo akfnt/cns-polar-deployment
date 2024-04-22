@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - github.com/akfnt/cns-edge-service/k8s?ref=main
+
+patches:
+  - path: patch-env.yml
+
+configMapGenerator:
+  - behavior: merge
+    files:
+      - application-staging.yml
+    name: cns-edge-config
+
+images:
+  - name: cns-edge-service
+    newName: ghcr.io/akfnt/cns-edge-service
+    newTag: latest
+
+replicas:
+  - name: cns-edge-service
+    count: 1
