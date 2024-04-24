@@ -1,0 +1,7 @@
+polar:
+  greeting: Welcome to the book catalog from a production Kubernetes environment!
+  testdata.enabled: false
+
+spring:
+  config:
+    import: configtree:/workspace/secrets/*/                # 시크릿 볼륨이 마운트된 경로로부터 설정을 임포트 한다. 스프링부트가 시크릿을 설정 트리로 로드하도록 지시한다.

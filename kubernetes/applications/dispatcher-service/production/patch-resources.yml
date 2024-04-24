@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cns-dispatcher-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: cns-dispatcher-service
+          resources:                  # 정상적인 조건에서 실행 중인 애플리케이션을 모니터링해서 올바른 값으로 설정하는 것이 중요
+            requests:                 # 컨테이너가 실행되기 위해 필요한 최소한의 리소스
+              memory: 756Mi
+              cpu: "0.1"
+            limits:                   # 컨테이너가 사용할 수 있는 최대한의 리소스
+              memory: 756Mi           # memory 는 압축할 수 없는 리소스
+              cpu: "2"                # cpu 는 압축 가능한 리소스
