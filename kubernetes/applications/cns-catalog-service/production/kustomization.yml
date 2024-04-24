@@ -1,25 +1,25 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:                              # 가장 최근의 릴리스 후보를 식별하기 위한 깃 커밋 해시 (sha)
-  - github.com/akfnt/cns-catalog-service/k8s?ref=333cbee9d7b3a0f5c6ced34fab416c580b42e093
+resources:
+- github.com/akfnt/cns-catalog-service/k8s?ref=333cbee9d7b3a0f5c6ced34fab416c580b42e093
 
 patches:
-  - path: patch-env.yml
-  - path: patch-volumes.yml
-  - path: patch-resources.yml
+- path: patch-env.yml
+- path: patch-volumes.yml
+- path: patch-resources.yml
 
-configMapGenerator:                     # 베이스 커스터마이제이션에 정의된 컨피그맵을 이 컨피그맵과 병합
-  - behavior: merge
-    files:
-      - application-prod.yml
-    name: cns-catalog-config            # 베이스 커스터마이제이션과 동일한 컨피그맵 이름
+configMapGenerator:
+- behavior: merge
+  files:
+  - application-prod.yml
+  name: cns-catalog-config
 
 images:
-  - name: cns-catalog-service                           # 배포 매니페스트에 젇의된 컨테이너 이름
-    newName: ghcr.io/akfnt/cns-catalog-service          # 컨테이너에 대한 새 이미지 이름
-    newTag: 333cbee9d7b3a0f5c6ced34fab416c580b42e093    # 컨테이너에 대한 새로운 태그 (릴리스 후보의 고유 식별자를 사용)
+- name: cns-catalog-service
+  newName: ghcr.io/akfnt/cns-catalog-service
+  newTag: f6343b0bf2727e7cdf2f384d6a909985f6aebe03
 
 replicas:
-  - name: cns-catalog-service
-    count: 2                                            # 쿠버네티스가 동적으로 확장/축소 하는것이 바람직. horizontal pod autoscaler 를 이용하도록 변경 필요.
+- count: 2
+  name: cns-catalog-service
