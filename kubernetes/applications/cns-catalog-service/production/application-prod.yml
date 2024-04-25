@@ -1,5 +1,5 @@
 polar:
-  greeting: Welcome to the book catalog from a production Kubernetes environment!
+  greeting: Welcome to our production book catalog synchronized with ArgoCD!
   testdata.enabled: false
 
 spring:
