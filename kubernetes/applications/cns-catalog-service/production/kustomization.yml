@@ -18,7 +18,7 @@ configMapGenerator:
 images:
 - name: cns-catalog-service
   newName: ghcr.io/akfnt/cns-catalog-service
-  newTag: 23ac44b8c2fbc34cbbe0ca39eac43682ee10629e
+  newTag: 7db141ec59c45fc0182ffbc0d635b22056639aea
 
 replicas:
 - count: 2
